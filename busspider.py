@@ -37,7 +37,7 @@ def read_url(url, bus_num, now, result):
     print('Fetched %s (%.3f sec)' % (bus_num, end-start))
     result.append({'bus_num':bus_num, 'url': url, 'page': data, 'date': now, 'error': error})
 
-def fetch_parallel(urls):
+def fetch_parallel(urls, now):
     result = []
     threads = [threading.Thread(target=read_url, args=(url, bus_num, now, result)) for bus_num, url in urls]
     for t in threads:
@@ -71,6 +71,8 @@ def run_spider(bus_nums):
 
 if __name__ == '__main__':
 
-    s = sched.scheduler(time.time, time.sleep)
-    s.enter(INTERVAL, 1, run_spider, argument=(bus_nums,))
-    s.run()
+    while True:
+        s = sched.scheduler(time.time, time.sleep)
+        s.enter(INTERVAL, 1, run_spider, argument=(bus_nums,))
+        s.run()
+
