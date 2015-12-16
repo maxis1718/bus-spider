@@ -49,7 +49,7 @@ def fetch_parallel(urls, now):
 def save_to_files(result):
     for res in result:
         fn = '.'.join([res['bus_num'],res['date'].strftime("%Y-%m-%d_%H-%M-%S"),'html'])
-        with open(os.path.join(TEMP_DIR, fn), 'wb') as fw:
+        with open(os.path.join(TEMP_DIR, res['bus_num'], fn), 'wb') as fw:
             fw.write(res['page'])
             print('Saved %s' % (res['bus_num']))
 
@@ -65,11 +65,14 @@ def run_spider(bus_nums):
     else:
         urls = map(lambda x: (x, BASE_URL+parse.urlencode({'routename': x})), bus_nums)
         result = fetch_parallel(urls, now)
-        if not os.path.exists(TEMP_DIR):
-            os.makedirs(TEMP_DIR)
         save_to_files(result)
 
 if __name__ == '__main__':
+
+    for bus_num in bus_nums:
+        dest = os.path.join(TEMP_DIR, bus_num)
+        if not os.path.exists(dest):
+            os.makedirs(dest)
 
     while True:
         s = sched.scheduler(time.time, time.sleep)
