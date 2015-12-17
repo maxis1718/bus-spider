@@ -1,5 +1,7 @@
 # bus-spider
 
+[![Join the chat at https://gitter.im/maxis1718/bus-spider](https://badges.gitter.im/maxis1718/bus-spider.svg)](https://gitter.im/maxis1718/bus-spider?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 > 最專業的公車時刻爬蟲
 
 
