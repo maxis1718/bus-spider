@@ -5,6 +5,7 @@ from functional import seq
 import requests
 from datetime import datetime
 
+
 def parse_bus_soup(rows):
     """ Parse bus rows to get the bus stop name and corresponding status
 
@@ -14,8 +15,9 @@ def parse_bus_soup(rows):
         list
     """
     return seq(rows)\
-        .map(lambda tr: seq(tr.select("td"))\
-             .map(lambda td: td.text.strip())
+        .map(lambda tr: seq(tr.select("td"))
+             .map(lambda td: td.text.strip()))
+
 
 def get_update_time(soup, now):
     """Extract the update time from the soup and convert it into the datetime.datetime format
@@ -26,8 +28,9 @@ def get_update_time(soup, now):
     Returns:
         datetime.datetime
     """
-    text = soup.find(attrs={"class":"updatetime"}).get_text(strip=True)
+    text = soup.find(attrs={"class": "updatetime"}).get_text(strip=True)
     return datetime.strptime(text, '(更新時間：%H:%M:%S)').replace(now.year, now.month, now.day)
+
 
 def get_bus_info(busnum):
     """Fetch and extract bus information given a bus number
