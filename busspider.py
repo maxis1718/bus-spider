@@ -13,12 +13,12 @@ from concurrent.futures import ThreadPoolExecutor
 from collections import namedtuple
 from lib import logtime
 import arrow
-import  functional
+import functional
 
 
 BASE_URL = 'http://pda.5284.com.tw/MQS/businfo2.jsp'
 TEMP_DIR = Path('busarrival')
-INTERVAL = 5
+INTERVAL = 30
 bus_nums = ['706', '857', '綠2右', '212', '793', '306', '307', '284', '270']
 
 # entry: http://pda.5284.com.tw/MQS/businfo1.jsp
@@ -30,12 +30,6 @@ bus_nums = ['706', '857', '綠2右', '212', '793', '306', '307', '284', '270']
 # 307 撫遠街-板橋前站
 # 綠2右 景美女中-中永和
 # 793 樹林-木柵
-
-
-
-
-# FetchRes = namedtuple('FetchRes', 'busnum, url, page, date, error')
-
 
 
 def get_update_time(soup):
