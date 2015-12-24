@@ -120,7 +120,7 @@ def crawl_bus_info(bus_num):
 
 @logtime(logger=logger)
 def get_bus_info(bus_num):
-    businfo = {'bus_num': bus_num, 'crawltime': arrow.now().format()}
+    businfo = {'bus_num': bus_num, 'crawltime': arrow.now()}
 
     try:
         businfo.update(crawl_bus_info(bus_num))
@@ -156,8 +156,8 @@ def save_to_files(result):
 
 
 def is_sleep_time(now, start=0, end=6):
-    return False
-    # return now.hour >= start and now.hour <= end
+    # return False
+    return now.hour >= start and now.hour <= end
 
 
 def run_spider(bus_nums):
@@ -181,3 +181,5 @@ if __name__ == '__main__':
         s = sched.scheduler(time.time, time.sleep)
         s.enter(INTERVAL, 30, run_spider, argument=(bus_nums,))
         s.run()
+
+
