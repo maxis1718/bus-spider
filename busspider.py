@@ -101,21 +101,29 @@ def parse_bus_soup(rows):
         .map(lambda tds: {"stop": tds[0].text, **extract_busstop_info(tds[1])})
 
 
+def extract_bus_info(text):
+    soup = BeautifulSoup(text, "html.parser")
+    tbl = soup.select("table > tr > td > table > tr")[1].select("> td ")
+    inbound_tr = tbl[0].select("> table > tr")
+    outbound_tr = tbl[1].select("> table > tr")
+
+    businfo = {
+        "inbound": parse_bus_soup(inbound_tr),
+        "outbound": parse_bus_soup(outbound_tr),
+        "updatetime": get_update_time(soup)
+    }
+    
+    return businfo
+
+
 @retry(tries=15, delay=1, logger=logger)
 def crawl_bus_info(bus_num):
     businfo = {'bus_num': bus_num}
 
     res = requests.get(BASE_URL, params={'routename': bus_num})
-    soup = BeautifulSoup(res.text, "html.parser")
-    tbl = soup.select("table > tr > td > table > tr")[1].select("> td ")
-    inbound_tr = tbl[0].select("> table > tr")
-    outbound_tr = tbl[1].select("> table > tr")
 
-    businfo["inbound"] = parse_bus_soup(inbound_tr)
-    businfo["outbound"] = parse_bus_soup(outbound_tr)
-    businfo["updatetime"] = get_update_time(soup)
+    return {'bus_num': bus_num,  **extract_bus_info(res.text)}
 
-    return businfo
 
 
 @logtime(logger=logger)
